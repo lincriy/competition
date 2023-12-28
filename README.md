@@ -1,1 +1,4 @@
-<h1 style="text-align:center;color:#FF6666">竞赛 后端管理系统</h1>
+# 竞赛 后端管理系统 初始框架
+
+### 修改：
+  1. 探索mes -> 领料申请；修改neu-carbon-mes (2023/12/28)
