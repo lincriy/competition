@@ -19,121 +19,121 @@ import com.neu.common.annotation.Log;
 import com.neu.common.core.controller.BaseController;
 import com.neu.common.core.domain.AjaxResult;
 import com.neu.common.enums.BusinessType;
-import com.neu.carbon.mes.domain.MesMeterialApplication;
-import com.neu.carbon.mes.service.IMesMeterialApplicationService;
+import com.neu.carbon.mes.domain.MesProductPlan;
+import com.neu.carbon.mes.service.IMesProductPlanService;
 import com.neu.common.utils.poi.ExcelUtil;
 import com.neu.common.core.page.TableDataInfo;
 
 /**
- * 领料申请Controller
+ * 生产计划Controller
  * 
  * @author neuedu
- * @date 2023-12-14
+ * @date 2024-01-01
  */
-@Api(tags = {"领料申请"})
+@Api(tags = {"生产计划"})
 @RestController
-@RequestMapping("/mes/RequisitionApply")
-public class MesMeterialApplicationController extends BaseController
+@RequestMapping("/mes/plan")
+public class MesProductPlanController extends BaseController
 {
     @Autowired
-    private IMesMeterialApplicationService mesMeterialApplicationService;
+    private IMesProductPlanService mesProductPlanService;
 
     /**
-     * 查询领料申请列表
+     * 查询生产计划列表
      */
     @GetMapping("/list")
-    @ApiOperation("查询领料申请列表")
+    @ApiOperation("查询生产计划列表")
     @DynamicResponseParameters(properties = {
 	        @DynamicParameter(name = "total", value = "总记录数"),
             @DynamicParameter(name = "code", value = "状态码，200正确，其他错误"),
-            @DynamicParameter(name = "rows", value = "返回业务数据（数组类型）", dataTypeClass = MesMeterialApplication.class),
+            @DynamicParameter(name = "rows", value = "返回业务数据（数组类型）", dataTypeClass = MesProductPlan.class),
             @DynamicParameter(name = "msg", value = "返回消息内容")
     })
-    public TableDataInfo list(MesMeterialApplication mesMeterialApplication)
+    public TableDataInfo list(MesProductPlan mesProductPlan)
     {
         startPage();
-        List<MesMeterialApplication> list = mesMeterialApplicationService.selectMesMeterialApplicationList(mesMeterialApplication);
+        List<MesProductPlan> list = mesProductPlanService.selectMesProductPlanList(mesProductPlan);
         return getDataTable(list);
     }
 
     /**
-     * 导出领料申请列表
+     * 导出生产计划列表
      */
-    @ApiOperation("导出领料申请列表")
+    @ApiOperation("导出生产计划列表")
     @DynamicResponseParameters(properties = {
             @DynamicParameter(name = "code", value = "状态码，200正确，其他错误"),
             @DynamicParameter(name = "msg", value = "文件名")
     })
-    @PreAuthorize("@ss.hasPermi('mes:RequisitionApply:export')")
-    @Log(title = "领料申请", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('mes:plan:export')")
+    @Log(title = "生产计划", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
-    public AjaxResult export(MesMeterialApplication mesMeterialApplication)
+    public AjaxResult export(MesProductPlan mesProductPlan)
     {
-        List<MesMeterialApplication> list = mesMeterialApplicationService.selectMesMeterialApplicationList(mesMeterialApplication);
-        ExcelUtil<MesMeterialApplication> util = new ExcelUtil<MesMeterialApplication>(MesMeterialApplication.class);
-        return util.exportExcel(list, "RequisitionApply");
+        List<MesProductPlan> list = mesProductPlanService.selectMesProductPlanList(mesProductPlan);
+        ExcelUtil<MesProductPlan> util = new ExcelUtil<MesProductPlan>(MesProductPlan.class);
+        return util.exportExcel(list, "plan");
     }
 
     /**
-     * 获取领料申请详细信息
+     * 获取生产计划详细信息
      */
-    @ApiOperation("获取领料申请详细信息")
+    @ApiOperation("获取生产计划详细信息")
     @DynamicResponseParameters(properties = {
             @DynamicParameter(name = "code", value = "状态码，200正确，其他错误"),
-            @DynamicParameter(name = "data", value = "返回业务数据", dataTypeClass = MesMeterialApplication.class),
+            @DynamicParameter(name = "data", value = "返回业务数据", dataTypeClass = MesProductPlan.class),
             @DynamicParameter(name = "msg", value = "返回消息内容")
     })
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return AjaxResult.success(mesMeterialApplicationService.selectMesMeterialApplicationById(id));
+        return AjaxResult.success(mesProductPlanService.selectMesProductPlanById(id));
     }
 
     /**
-     * 新增领料申请
+     * 新增生产计划
      */
-    @ApiOperation("新增领料申请")
+    @ApiOperation("新增生产计划")
     @DynamicResponseParameters(properties = {
             @DynamicParameter(name = "code", value = "状态码，200正确，其他错误"),
             @DynamicParameter(name = "msg", value = "返回消息内容")
     })
-    @PreAuthorize("@ss.hasPermi('mes:RequisitionApply:add')")
-    @Log(title = "领料申请", businessType = BusinessType.INSERT)
+    @PreAuthorize("@ss.hasPermi('mes:plan:add')")
+    @Log(title = "生产计划", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody MesMeterialApplication mesMeterialApplication)
+    public AjaxResult add(@RequestBody MesProductPlan mesProductPlan)
     {
-        return toAjax(mesMeterialApplicationService.insertMesMeterialApplication(mesMeterialApplication));
+        return toAjax(mesProductPlanService.insertMesProductPlan(mesProductPlan));
     }
 
     /**
-     * 修改领料申请
+     * 修改生产计划
      */
-    @ApiOperation("修改领料申请")
+    @ApiOperation("修改生产计划")
     @DynamicResponseParameters(properties = {
             @DynamicParameter(name = "code", value = "状态码，200正确，其他错误"),
             @DynamicParameter(name = "msg", value = "返回消息内容")
     })
-    @PreAuthorize("@ss.hasPermi('mes:RequisitionApply:edit')")
-    @Log(title = "领料申请", businessType = BusinessType.UPDATE)
+    @PreAuthorize("@ss.hasPermi('mes:plan:edit')")
+    @Log(title = "生产计划", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody MesMeterialApplication mesMeterialApplication)
+    public AjaxResult edit(@RequestBody MesProductPlan mesProductPlan)
     {
-        return toAjax(mesMeterialApplicationService.updateMesMeterialApplication(mesMeterialApplication));
+        return toAjax(mesProductPlanService.updateMesProductPlan(mesProductPlan));
     }
 
     /**
-     * 删除领料申请
+     * 删除生产计划
      */
-    @ApiOperation("删除领料申请")
+    @ApiOperation("删除生产计划")
     @DynamicResponseParameters(properties = {
             @DynamicParameter(name = "code", value = "状态码，200正确，其他错误"),
             @DynamicParameter(name = "msg", value = "返回消息内容")
     })
-    @PreAuthorize("@ss.hasPermi('mes:RequisitionApply:remove')")
-    @Log(title = "领料申请", businessType = BusinessType.DELETE)
+    @PreAuthorize("@ss.hasPermi('mes:plan:remove')")
+    @Log(title = "生产计划", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
-        return toAjax(mesMeterialApplicationService.deleteMesMeterialApplicationByIds(ids));
+        return toAjax(mesProductPlanService.deleteMesProductPlanByIds(ids));
     }
 }
